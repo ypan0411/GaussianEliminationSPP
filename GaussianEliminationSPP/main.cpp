@@ -22,7 +22,7 @@ void printMatrix(vector<vector<double>> & matrix){
     }
 }
 
-void GaussianEliminationSSP(vector<vector<double>>& matrix, int n){
+vector<double> GaussianEliminationSSP(vector<vector<double>>& matrix, int n){
     //Initialize vector s
     vector<double> s;
     cout << "Initialization of s: [ ";
@@ -61,28 +61,41 @@ void GaussianEliminationSSP(vector<vector<double>>& matrix, int n){
         printMatrix(matrix);
 
     }
+    //Computing the final results
+    vector<double> result;
+    for (int i = n - 1; i >= 0; --i) {
+        double x = matrix[i][n] / matrix[i][i];
+        for(int j = 0; j < i; j++){
+            matrix[j][n] -= x * matrix[j][i];
+        }
+        result.insert(result.begin(), x);
+    }
 
-
+    return result;
 }
 
 int main()
 {
     int n;
     vector<vector<double>> matrix;
-//    cout << "Scale of the matrix:";
-//    cin >> n;
-//    cout << "Enter the entries one by one" << endl;
-//    for(int i = 0; i < n; i++){
-//        matrix.push_back({});
-//        for(int j = 0; j <= n; j++){
-//            double entry;
-//            cin >> entry;
-//            matrix[i].push_back(entry);
-//        }
-//    }
+    cout << "Scale of the matrix:";
+    cin >> n;
+    cout << "Enter the entries one by one" << endl;
+    for(int i = 0; i < n; i++){
+        matrix.push_back({});
+        for(int j = 0; j <= n; j++){
+            double entry;
+            cin >> entry;
+            matrix[i].push_back(entry);
+        }
+    }
 
-    matrix = {{1, 0, 4, 1, 1}, {2, 1, 10, 1, 2}, {-1, 5, 4, 3, 3}, {5, 2, 2, 2, 4}};
-    GaussianEliminationSSP(matrix, 4);
+    vector<double> result = GaussianEliminationSSP(matrix, n);
+
+    cout << "The solution of the given equations:" << endl;
+    for (int i = 0; i < n; ++i) {
+        cout << "x" << i+1 << "=" <<  result[i] << endl;
+    }
 
     return 0;
 }
